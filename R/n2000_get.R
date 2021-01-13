@@ -86,3 +86,23 @@ n2000_getGPGK <- function(folder,
   }
 }
 
+#' Show N2000 database definitions
+#'
+#' @param table Which table of the definitions (optional)
+#' @examples
+#'\dontrun{
+#' def_list <- n2000_getdefinitions()
+#' def_list$HABITATS
+#' }
+#' @export
+#' @author Martin Jung
+
+n2000_showdefinitions <- function(table = NULL){
+  load('data/NATURA2000_definitions.rdata')
+  if(!is.null(table)){
+    assert_that(is.character(table),
+                table %in% names(def))
+    # Reassign
+    assign('def',def[[table]] )
+  }
+}

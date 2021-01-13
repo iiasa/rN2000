@@ -1,0 +1,39 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-"
+)
+```
+
+# rN2000 package
+<!-- <a href='https://github.com/iiasa/rN2000'><img src="man/figures/logo.png" align="right"height=140/></a> --->  
+
+Tools for downloading, querying and processing European Union [Natura 2000](https://ec.europa.eu/environment/nature/natura2000/data/index_en.htm) datasets.
+
+## Installation
+
+Currently only as development version on GitHub
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("IIASA/rN2000")
+```
+
+
+
+## Usage
+
+**In development !!!**
+
+### Load package
+
+```{r message=FALSE, results='hide', eval = FALSE}
+library(rN2000)
+```

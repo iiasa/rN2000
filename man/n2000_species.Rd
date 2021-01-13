@@ -11,6 +11,9 @@ n2000_species(n2000_file, sname)
 
 \item{sname}{The latin name of a focal species}
 }
+\value{
+A sf object with the Natura 2000 sites containing this species
+}
 \description{
 Create a species subset from the Natura2000 dataset
 }
@@ -20,5 +23,5 @@ n2000_species('/media/martin/data/EuropeanBiodiversityData/N2000/Natura2000_end2
 }
 }
 \author{
-Martin Jun
+Martin Jung
 }
