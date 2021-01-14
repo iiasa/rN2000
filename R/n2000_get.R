@@ -86,6 +86,29 @@ n2000_getGPGK <- function(folder,
   }
 }
 
+#' Internal unction to prepare the definitions file for further use
+#' @param fname File name pointing to the Natura2000_end2019_dataset_definitions.xls file
+#' @author Martin Jung
+#' @return Saves a list of definitions from the sheet in 'data'
+#' @keywords internal
+
+n2000_definitions <- function(fname){
+  assertthat::assert_that(file.exists(fname),
+                          msg = 'Download and store this file: https://www.eea.europa.eu/data-and-maps/data/natura-11/table-definitions/table-definitions-xls-file/at_download/file')
+  require(readxl)
+
+  # Output list
+  def <- list()
+  for(sh in readxl::excel_sheets(fname) ){
+    def[[sh]] <- readxl::read_xls(fname,sheet = sh)
+  }
+
+  # Save the output
+  dir.create('data',showWarnings = FALSE)
+  save('def',file = 'data/NATURA2000_definitions.rdata')
+}
+
+
 #' Show N2000 database definitions
 #'
 #' @param table Which table of the definitions (optional)

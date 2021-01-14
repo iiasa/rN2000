@@ -109,24 +109,3 @@ n2000_habitat <- function(n2000_file, hname){
 #'   save('df',file = 'data/NATURA2000_Species.rdata')
 #'
 #' }
-
-#' Function to prepare the definitions file for further use
-#' @param fname File name pointing to the Natura2000_end2019_dataset_definitions.xls file
-#' @author Martin Jung
-#' @return Saves a list of definitions from the sheet in 'data'
-#' @keywords internal
-
-n2000_definitions <- function(fname){
-  assertthat::assert_that(file.exists(fname))
-  require(readxl)
-
-  # Output list
-  def <- list()
-  for(sh in readxl::excel_sheets(fname) ){
-    def[[sh]] <- readxl::read_xls(fname,sheet = sh)
-  }
-
-  # Save the output
-  dir.create('data',showWarnings = FALSE)
-  save('def',file = 'data/NATURA2000_definitions.rdata')
-}
