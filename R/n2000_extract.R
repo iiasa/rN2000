@@ -15,19 +15,17 @@ n2000_extract <- function(n2000_file,
                          byid = T,
                          enclosed = F){
   # load spatial data
-  n2000_data <-
-    ifelse(
-      is.character(n2000_file),
-      sf::st_read(n2000_file),
-      n2000_file
-    )
+  if(is.character(n2000_file)){
+    n2000_file <-
+      n2000_file %>%
+      sf::st_read()
+  }
 
-  target_areas <-
-    ifelse(
-      is.character(target_areas),
-      sf::st_read(target_areas),
-      target_areas
-    )
+  if(is.character(target_areas)){
+    target_areas <-
+      target_areas %>%
+      sf::st_read()
+  }
 
   # Check
   assertthat::assert_that(is.logical(byid),
@@ -42,53 +40,53 @@ n2000_extract <- function(n2000_file,
   }
 
   # Check and reproject target areas
-  if(sf::st_crs(target_areas) != sf::st_crs(n2000_data)){
+  if(sf::st_crs(target_areas) != sf::st_crs(n2000_file)){
     target_areas <-
       target_areas %>%
       st_transform(
-        crs = st_crs(n2000_data)
+        crs = st_crs(n2000_file)
       )
   }
 
   # Choose extraction function
   if(enclosed == T){
-    extr_function <- sf::st_within()
+    extr_function <- sf::st_within
   }else{
-    extr_function <- sf::st_intersects()
+    extr_function <- sf::st_intersects
   }
 
   # Extract info
   output_df <-
     cbind(
       as.data.frame(target_areas[1,]),
-      as.data.frame(n2000_data[1,])
+      as.data.frame(n2000_file[1,])
     )
 
   for(i in 1:nrow(target_areas)){
     tmp <-
       target_areas[i,] %>%
-      extr_function(n2000_data) %>%
+      extr_function(n2000_file) %>%
       unlist()
     if(length(tmp) >=1L){
-      tmp_df <- output_df[rep(1,length(tmp)),]
+      tmp_df <- output_df[c(rep(1,length(tmp))),]
       tmp_df[,1:length(target_areas)] <- target_areas[i,]
-      tmp_df[,(1+length(target_areas)):length(tmp_df)] <- n2000_data[tmp,]
+      tmp_df[,(1+length(target_areas)):length(tmp_df)] <- n2000_file[tmp,]
     }else{
       tmp_df <- output_df[1,]
       tmp_df[,1:length(target_areas)] <- target_areas[i,]
       tmp_df[,(1+length(target_areas)):length(tmp_df)] <- NA
     }
 
+    if (i == 1) {
+      output_df <-
+        tmp_df
+    } else{
+      output_df <-
+        rbind(output_df,
+              tmp_df)
 
-    output_df <-
-      ifelse(
-        i == 1,
-        tmp_df,
-        rbind(
-          output_df,
-          tmp_df
-        )
-      )
+    }
+
   }
 
   return(output_df)
