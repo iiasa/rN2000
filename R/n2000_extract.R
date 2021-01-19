@@ -5,7 +5,7 @@
 #' @param target_areas The file path to the spatial polygon(s) for the area of interest. Must be readable by \code{sf::st_read()}. Alternatively the name of the loaded spatial data in the environment.
 #' @param byid Logical. Should data be extracted for each target area (TRUE) or should they be merged first (FALSE)? Defaults to TRUE.
 #' @param enclosed Logical. Should Natura 2000 sites only be included if they are fully enclosed by the target area? Defaults to FALSE.
-#' @examples
+
 #' @details If the CRS of the \code{target_areas} does not match that of the Natura 2000 data, the \code{target_areas} are first reprojected.
 #' @export
 #' @author Matt Lewis
