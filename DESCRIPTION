@@ -22,16 +22,16 @@ Imports:
     dplyr,
     magrittr
 Depends:
-    R(>= 3.4.0),
+    R(>= 3.5.0),
     usethis,
     dplyr,
     raster,
     stringr,
     sf,
+    leaflet,
     assertthat(>= 0.2.0)
 Suggests:
     tidyr,
-    leaflet,
     fasterize
 URL: https://github.com/iiasa/rN2000
 BugReports: https://github.com/iiasa/rN2000
