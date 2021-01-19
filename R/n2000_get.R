@@ -38,7 +38,7 @@ n2000_getCSV <- function(folder,
     # Check if some of the zipped files do not exist
     if( paste0('Natura2000_end',year,'_SPECIES.csv') %notin% basename(lf) ) {
       myLog('No Natura 2000 data found. Redownloading')
-      try({ o <- download.file(url = n_link,
+      o<- try({ download.file(url = n_link,
                     destfile = paste0(folder,'/', file_zipped))
       })
       if(class(o)=='try-error' || o != 0){ stop('Natura 2000 file could not be downloaded. Change download link')}
@@ -89,7 +89,7 @@ n2000_getGPGK <- function(folder,
     # Check if some of the zipped files do not exist
     if( paste0('Natura2000_end',year,'.gpkg') %notin% basename(lf) ) {
       myLog('No Natura 2000 geopackage found. Redownloading...')
-      try({ o <- download.file(url = n_link,
+      o <- try({download.file(url = n_link,
                                destfile = paste0(folder,'/', file_g))
       })
       if(class(o)=='try-error' || o != 0){ stop('Natura 2000 file could not be downloaded. Change download link')}
