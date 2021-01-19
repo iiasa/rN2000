@@ -32,18 +32,19 @@ n2000_getCSV <- function(folder,
 
   # if zip file already there, unzip and delete
   if(file_zipped %in% basename(lf)){
-    unzip(zipfile = lf[ grep(file_zipped, basename(lf)) ],exdir = folder,overwrite = TRUE)
+    unzip(zipfile = lf[ grep(file_zipped, basename(lf)) ],exdir = paste0(folder, gsub(".zip", "", file_zipped)),overwrite = TRUE)
     file.remove(lf[ grep(file_zipped, basename(lf)) ])
   } else {
     # Check if some of the zipped files do not exist
     if( paste0('Natura2000_end',year,'_SPECIES.csv') %notin% basename(lf) ) {
       myLog('No Natura 2000 data found. Redownloading')
       o<- try({ download.file(url = n_link,
-                    destfile = paste0(folder,'/', file_zipped))
+                    destfile = paste0(folder,'/', file_zipped), mode = "wb")
       })
       if(class(o)=='try-error' || o != 0){ stop('Natura 2000 file could not be downloaded. Change download link')}
       # Unzip and delete the downloaded file
-      unzip(zipfile = lf[ grep(file_zipped, basename(lf)) ],exdir = folder,overwrite = TRUE)
+      lf <- list.files(folder,full.names = T)
+      unzip(zipfile = lf[ grep(file_zipped, basename(lf)) ],exdir = paste0(folder, gsub(".zip", "", file_zipped)),overwrite = TRUE)
       file.remove(lf[ grep(file_zipped, basename(lf)) ])
     }
   }
@@ -83,18 +84,19 @@ n2000_getGPGK <- function(folder,
 
   # if zip file already there, unzip and delete
   if(file_g %in% basename(lf)){
-    unzip(zipfile = lf[ grep(file_g, basename(lf)) ], exdir = folder, overwrite = TRUE)
+    unzip(zipfile = lf[ grep(file_g, basename(lf)) ], exdir = paste0(folder, gsub(".zip", "", file_g)), overwrite = TRUE)
     file.remove(lf[ grep(file_g, basename(lf)) ])
   } else {
     # Check if some of the zipped files do not exist
     if( paste0('Natura2000_end',year,'.gpkg') %notin% basename(lf) ) {
       myLog('No Natura 2000 geopackage found. Redownloading...')
-      o <- try({download.file(url = n_link,
-                               destfile = paste0(folder,'/', file_g))
+      o<- try({ download.file(url = n_link,
+                              destfile = paste0(folder,'/', file_g), mode = "wb")
       })
       if(class(o)=='try-error' || o != 0){ stop('Natura 2000 file could not be downloaded. Change download link')}
       # Unzip and delete the downloaded file
-      unzip(zipfile = lf[ grep(file_g, basename(lf)) ], exdir = folder, overwrite = TRUE)
+      lf <- list.files(folder,full.names = T)
+      unzip(zipfile = lf[ grep(file_g, basename(lf)) ], exdir = paste0(folder, gsub(".zip", "", file_g)), overwrite = TRUE)
       file.remove(lf[ grep(file_g, basename(lf)) ])
     }
   }
