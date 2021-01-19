@@ -13,7 +13,7 @@
 n2000_getCSV <- function(folder,
                       year = "2019",
                       n_link = 'https://www.eea.europa.eu/data-and-maps/data/natura-11/natura-2000-tabular-data-12-tables/natura-2000-comma-separated-values-files/at_download/file'){
-  folder <-
+  folder2 <-
     ifelse(
       substr(folder, nchar(folder), nchar(folder)) == "/",
       substr(folder, 1, (nchar(folder) -1)),
@@ -21,7 +21,7 @@ n2000_getCSV <- function(folder,
     )
 
   # Check
-  assert_that(is.dir(folder),
+  assert_that(is.dir(folder2),
               is.character(year))
 
   # Key files and sources
@@ -82,20 +82,20 @@ n2000_getGPGK <- function(folder,
   lf <- list.files(folder,full.names = T)
 
   # if zip file already there, unzip and delete
-  if(file_zipped %in% basename(lf)){
-    unzip(zipfile = lf[ grep(file_zipped, basename(lf)) ], exdir = folder, overwrite = TRUE)
-    file.remove(lf[ grep(file_zipped, basename(lf)) ])
+  if(file_g %in% basename(lf)){
+    unzip(zipfile = lf[ grep(file_g, basename(lf)) ], exdir = folder, overwrite = TRUE)
+    file.remove(lf[ grep(file_g, basename(lf)) ])
   } else {
     # Check if some of the zipped files do not exist
     if( paste0('Natura2000_end',year,'.gpkg') %notin% basename(lf) ) {
       myLog('No Natura 2000 geopackage found. Redownloading...')
       try({ o <- download.file(url = n_link,
-                               destfile = paste0(folder,'/', file_zipped))
+                               destfile = paste0(folder,'/', file_g))
       })
       if(class(o)=='try-error' || o != 0){ stop('Natura 2000 file could not be downloaded. Change download link')}
       # Unzip and delete the downloaded file
-      unzip(zipfile = lf[ grep(file_zipped, basename(lf)) ], exdir = folder, overwrite = TRUE)
-      file.remove(lf[ grep(file_zipped, basename(lf)) ])
+      unzip(zipfile = lf[ grep(file_g, basename(lf)) ], exdir = folder, overwrite = TRUE)
+      file.remove(lf[ grep(file_g, basename(lf)) ])
     }
   }
 }
