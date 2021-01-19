@@ -64,7 +64,7 @@ n2000_getCSV <- function(folder,
 n2000_getGPGK <- function(folder,
                          year = "2019",
                          n_link = 'https://cmshare.eea.europa.eu/s/GkqdcbbsYmmBSEQ/download'){
-  folder <-
+  folder2 <-
     ifelse(
       substr(folder, nchar(folder), nchar(folder)) == "/",
       substr(folder, 1, (nchar(folder) -1)),
@@ -72,7 +72,7 @@ n2000_getGPGK <- function(folder,
     )
 
   # Check
-  assert_that(is.dir(folder),
+  assert_that(is.dir(folder2),
               is.character(year))
 
   # Key files and sources
