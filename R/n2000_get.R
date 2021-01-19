@@ -13,6 +13,13 @@
 n2000_getCSV <- function(folder,
                       year = "2019",
                       n_link = 'https://www.eea.europa.eu/data-and-maps/data/natura-11/natura-2000-tabular-data-12-tables/natura-2000-comma-separated-values-files/at_download/file'){
+  folder <-
+    ifelse(
+      substr(folder, nchar(folder), nchar(folder)) == "/",
+      substr(folder, 1, (nchar(folder) -1)),
+      folder
+    )
+
   # Check
   assert_that(is.dir(folder),
               is.character(year))
@@ -57,6 +64,13 @@ n2000_getCSV <- function(folder,
 n2000_getGPGK <- function(folder,
                          year = "2019",
                          n_link = 'https://cmshare.eea.europa.eu/s/GkqdcbbsYmmBSEQ/download'){
+  folder <-
+    ifelse(
+      substr(folder, nchar(folder), nchar(folder)) == "/",
+      substr(folder, 1, (nchar(folder) -1)),
+      folder
+    )
+
   # Check
   assert_that(is.dir(folder),
               is.character(year))
