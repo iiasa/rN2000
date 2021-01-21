@@ -2,12 +2,17 @@ Package: rN2000
 Type: Package
 Title: Package for downloading, querying and processing of Natura 2000 data
 Version: 0.1
-Authors@R: 
+Authors@R: c(
     person(given = "Martin",
            family = "Jung",
            role = c("aut", "cre"),
            email = "jung@iiasa.ac.at",
-           comment = c(ORCID = "0000-0002-7569-1390"))
+           comment = c(ORCID = "0000-0002-7569-1390")),
+    person(given = "Matthew",
+           family = "Lewis",
+           role = c("aut"),
+           email = "lewis@iiasa.ac.at",
+           comment = c(ORCID = "0000-0003-2244-4078")))
 Maintainer: Martin Jung <jung@iiasa.ac.at>
 Description: This package provides functionalities to download, process and visualize Natura 2000 data. 
     Functions allow the filtering, conversion and exporting of critical habitat and species data.
@@ -24,12 +29,10 @@ Imports:
 Depends:
     R(>= 3.5.0),
     usethis,
-    dplyr,
     raster,
     stringr,
     sf,
-    leaflet,
-    assertthat(>= 0.2.0)
+    leaflet
 Suggests:
     tidyr,
     fasterize
