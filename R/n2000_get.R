@@ -1,18 +1,25 @@
 #' Set or download the N2000 database in csv format to a given folder
 #'
-#' @param folder A folder with the Natura 2000 dataset
-#' @param year The latest version of the Natura 2000 dataset
-#' @param nlink This should normally not be altered. Direct download link for Natura 2000
+#' @param folder A [`character`] directory path to download the Natura 2000 data set to. Automatic checks to see if the data already exist in the folder (can be overridden by specifying `force = T`).
+#' @param year (optional). The [`character`] year version of the Natura 2000 data set to check if it already exists. Defaults to the most recently available version (2019).
+#' @param force (optional). [`logical`] should a new download be forced even if data already exists in the directory? Defaults to `FALSE`.
+#' @param nlink (normally not altered). The [`character`] direct download link for Natura 2000.
 #' @examples
 #'\dontrun{
 #' n2000_getCSV(folder = 'myfolder', year = "2019")
 #' }
 #' @export
 #' @author Martin Jung
+#' @author Matt Lewis
 
-n2000_getCSV <- function(folder,
-                      year = "2019",
-                      n_link = 'https://www.eea.europa.eu/data-and-maps/data/natura-11/natura-2000-tabular-data-12-tables/natura-2000-comma-separated-values-files/at_download/file'){
+n2000_getCSV <-
+  function(
+    folder,
+    year = "2019",
+    force = FALSE,
+    nlink = 'https://www.eea.europa.eu/data-and-maps/data/natura-11/natura-2000-tabular-data-12-tables/natura-2000-comma-separated-values-files/at_download/file'
+    ){
+
   folder2 <-
     ifelse(
       substr(folder, nchar(folder), nchar(folder)) == "/",
@@ -21,50 +28,59 @@ n2000_getCSV <- function(folder,
     )
 
   # Check
-  assert_that(is.dir(folder2),
-              is.character(year))
+  assertthat::assert_that(
+    assertthat::is.dir(folder2),
+    is.character(year),
+    is.character(nlink),
+    substr(nlink, 1, 8) == "https://")
 
   # Key files and sources
   file_zipped <- paste0("Natura2000_end",year,"_csv.zip")
 
   # Load files in folder
-  lf <- list.files(folder,full.names = T)
+  lf <- list.files(folder, full.names = T, recursive = T)
 
   # if zip file already there, unzip and delete
-  if(file_zipped %in% basename(lf)){
+  if(file_zipped %in% basename(lf) & force == F){
     unzip(zipfile = lf[ grep(file_zipped, basename(lf)) ],exdir = paste0(folder, gsub(".zip", "", file_zipped)),overwrite = TRUE)
     file.remove(lf[ grep(file_zipped, basename(lf)) ])
   } else {
     # Check if some of the zipped files do not exist
-    if( paste0('Natura2000_end',year,'_SPECIES.csv') %notin% basename(lf) ) {
-      myLog('No Natura 2000 data found. Redownloading')
-      o<- try({ download.file(url = n_link,
+    if( paste0('Natura2000_end',year,'_SPECIES.csv') %notin% basename(lf) || force == T) {
+      myLog('Downloading new Natura 2000 data')
+      o<- try({ download.file(url = nlink,
                     destfile = paste0(folder,'/', file_zipped), mode = "wb")
       })
-      if(class(o)=='try-error' || o != 0){ stop('Natura 2000 file could not be downloaded. Change download link')}
+      if(class(o)=='try-error' || o != 0){ stop('Natura 2000 file could not be downloaded. Change download link (`nlink`)')}
       # Unzip and delete the downloaded file
       lf <- list.files(folder,full.names = T)
       unzip(zipfile = lf[ grep(file_zipped, basename(lf)) ],exdir = paste0(folder, gsub(".zip", "", file_zipped)),overwrite = TRUE)
       file.remove(lf[ grep(file_zipped, basename(lf)) ])
+    }else{
+      cat("Up to date Natura 2000 data already appears to be in the selected folder. No download needed.
+          If you want to redownload the data, set `force = T`")
     }
   }
 }
 
 #' Set or download the N2000 database in geopackage format to a given folder
 #'
-#' @param folder A folder with the Natura 2000 dataset
-#' @param year The latest version of the Natura 2000 dataset
-#' @param nlink This should normally not be altered. Direct download link for Natura 2000
+#' @param folder A [`character`] directory path to download the Natura 2000 data set to. Automatic checks to see if the data already exist in the folder (can be overridden by specifying `force = T`).
+#' @param year (optional). The [`character`] year version of the Natura 2000 data set to check if it already exists. Defaults to the most recently available version (2019).
+#' @param force (optional). [`logical`] should a new download be forced even if data already exists in the directory? Defaults to `FALSE`.
+#' @param nlink (normally not altered). The [`character`] direct download link for Natura 2000.
 #' @examples
 #'\dontrun{
 #' n2000_getGPKG(folder = 'myfolder', year = "2019")
 #' }
 #' @export
 #' @author Martin Jung
+#' @author Matt Lewis
 
 n2000_getGPGK <- function(folder,
                          year = "2019",
-                         n_link = 'https://cmshare.eea.europa.eu/s/GkqdcbbsYmmBSEQ/download'){
+                         force = FALSE,
+                         nlink = 'https://cmshare.eea.europa.eu/s/GkqdcbbsYmmBSEQ/download'){
   folder2 <-
     ifelse(
       substr(folder, nchar(folder), nchar(folder)) == "/",
@@ -73,24 +89,28 @@ n2000_getGPGK <- function(folder,
     )
 
   # Check
-  assert_that(is.dir(folder2),
-              is.character(year))
+  assertthat::assert_that(
+    assertthat::is.dir(folder2),
+    is.character(year),
+    is.character(nlink),
+    substr(nlink, 1, 8) == "https://"
+    )
 
   # Key files and sources
   file_g <- paste0("Natura2000_end",year,"_gpkg.zip")
 
   # Load files in folder
-  lf <- list.files(folder,full.names = T)
+  lf <- list.files(folder, full.names = T, recursive = T)
 
   # if zip file already there, unzip and delete
-  if(file_g %in% basename(lf)){
+  if(file_g %in% basename(lf) & force == FALSE){
     unzip(zipfile = lf[ grep(file_g, basename(lf)) ], exdir = paste0(folder, gsub(".zip", "", file_g)), overwrite = TRUE)
     file.remove(lf[ grep(file_g, basename(lf)) ])
   } else {
     # Check if some of the zipped files do not exist
-    if( paste0('Natura2000_end',year,'.gpkg') %notin% basename(lf) ) {
-      myLog('No Natura 2000 geopackage found. Redownloading...')
-      o<- try({ download.file(url = n_link,
+    if( paste0('Natura2000_end',year,'.gpkg') %notin% basename(lf) | force == T) {
+      myLog('Downloading new Natura 2000 data')
+      o<- try({ download.file(url = nlink,
                               destfile = paste0(folder,'/', file_g), mode = "wb")
       })
       if(class(o)=='try-error' || o != 0){ stop('Natura 2000 file could not be downloaded. Change download link')}
@@ -98,36 +118,75 @@ n2000_getGPGK <- function(folder,
       lf <- list.files(folder,full.names = T)
       unzip(zipfile = lf[ grep(file_g, basename(lf)) ], exdir = paste0(folder, gsub(".zip", "", file_g)), overwrite = TRUE)
       file.remove(lf[ grep(file_g, basename(lf)) ])
+    }else{
+      cat("Up to date Natura 2000 data already appears to be in the selected folder. No download needed.
+          If you want to redownload the data, set `force = T`")
     }
   }
 }
 
-#' Internal unction to prepare the definitions file for further use
-#' @param fname File name pointing to the Natura2000_end2019_dataset_definitions.xls file
+#' Download Natura 2000 definitions
+#' @param folder A [`character`] directory path to download the Natura 2000 data definitions to. Automatically checks to see if the data already exist in the folder (can be overridden by specifying `force = T`).
+#' @param year (optional). The [`character`] year version of the Natura 2000 data set to check if it already exists. Defaults to the most recently available version (2019).
+#' @param force (optional). [`logical`] should a new download be forced even if data already exists in the directory? Defaults to `FALSE`.
+#' @param nlink (normally not altered). The [`character`] direct download link for Natura 2000 definitions file.
+#' @author Matt Lewis
 #' @author Martin Jung
-#' @return Saves a list of definitions from the sheet in 'data'
-#' @keywords internal
+#' @export
 
-n2000_definitions <- function(fname){
-  assertthat::assert_that(file.exists(fname),
-                          msg = 'Download and store this file: https://www.eea.europa.eu/data-and-maps/data/natura-11/table-definitions/table-definitions-xls-file/at_download/file')
-  require(readxl)
+n2000_getDefinitions <- function(
+  folder,
+  year = "2019",
+  force = FALSE,
+  nlink = 'https://www.eea.europa.eu/data-and-maps/data/natura-11/table-definitions/table-definitions-xls-file/at_download/file'){
 
-  # Output list
-  def <- list()
-  for(sh in readxl::excel_sheets(fname) ){
-    def[[sh]] <- readxl::read_xls(fname,sheet = sh)
+  folder2 <-
+    ifelse(
+      substr(folder, nchar(folder), nchar(folder)) == "/",
+      substr(folder, 1, (nchar(folder) -1)),
+      folder
+    )
+
+  # Check
+  assertthat::assert_that(
+    assertthat::is.dir(folder2),
+    is.character(year),
+    is.character(nlink),
+    substr(nlink, 1, 8) == "https://"
+  )
+
+  # Key files and sources
+  file_g <- paste0("Natura2000_end",year,"_dataset_definitions.xls")
+
+  # Load files in folder
+  lf <- list.files(folder, full.names = T, recursive = T)
+
+  # if zip file already there, unzip and delete
+  if(file_g %notin% basename(lf) | force == T) {
+    myLog('Downloading new Natura 2000 data definitions')
+    o <- try({
+      download.file(
+        url = nlink,
+        destfile = paste0(folder, '/', file_g),
+        mode = "wb"
+      )
+    })
+    if (class(o) == 'try-error' ||
+        o != 0) {
+      stop('Natura 2000 file could not be downloaded. Change download link')
+    }
+  } else{
+    cat(
+      "Up to date Natura 2000 data definitions already appears to be in the selected folder. No download needed.
+          If you want to redownload the data, set `force = T`"
+    )
   }
-
-  # Save the output
-  dir.create('data',showWarnings = FALSE)
-  save('def',file = 'data/NATURA2000_definitions.rdata')
 }
 
 
 #' Show N2000 database definitions
 #'
-#' @param table Which table of the definitions (optional)
+#' @param table (optional). Table of the definitions (optional)
 #' @examples
 #'\dontrun{
 #' def_list <- n2000_getdefinitions()

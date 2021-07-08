@@ -2,24 +2,24 @@
 % Please edit documentation in R/n2000_filterSpecies.R
 \name{n2000_species}
 \alias{n2000_species}
-\title{Create a species subset from the Natura2000 dataset}
+\title{Create a species subset from the Natura 2000 data}
 \usage{
-n2000_species(n2000_file, sname)
+n2000_species(x, name)
 }
 \arguments{
-\item{n2000_file}{The file to the Natura2000 geopackage}
+\item{x}{The [`character] file path to the Natura 2000 geopackage}
 
-\item{sname}{The latin name of a focal species}
+\item{name}{The [`character`] latin name of a focal species}
 }
 \value{
-A sf object with the Natura 2000 sites containing this species
+A [`sf`] object with the Natura 2000 sites containing this species
 }
 \description{
-Create a species subset from the Natura2000 dataset
+Create a species subset from the Natura 2000 data
 }
 \examples{
 \dontrun{
-n2000_species('/media/martin/data/EuropeanBiodiversityData/N2000/Natura2000_end2019.gpkg', sname = 'Asio otus')
+n2000_species('/filepath/Natura2000_end2019.gpkg', name = 'Asio otus')
 }
 }
 \author{

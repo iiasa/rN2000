@@ -7,7 +7,7 @@
 n2000_showdefinitions(table = NULL)
 }
 \arguments{
-\item{table}{Which table of the definitions (optional)}
+\item{table}{(optional). Table of the definitions (optional)}
 }
 \description{
 Show N2000 database definitions

@@ -7,15 +7,18 @@
 n2000_getGPGK(
   folder,
   year = "2019",
-  n_link = "https://cmshare.eea.europa.eu/s/GkqdcbbsYmmBSEQ/download"
+  force = FALSE,
+  nlink = "https://cmshare.eea.europa.eu/s/GkqdcbbsYmmBSEQ/download"
 )
 }
 \arguments{
-\item{folder}{A folder with the Natura 2000 dataset}
+\item{folder}{A [`character`] directory path to download the Natura 2000 data set to. Automatic checks to see if the data already exist in the folder (can be overridden by specifying `force = T`).}
 
-\item{year}{The latest version of the Natura 2000 dataset}
+\item{year}{(optional). The [`character`] year version of the Natura 2000 data set to check if it already exists. Defaults to the most recently available version (2019).}
 
-\item{nlink}{This should normally not be altered. Direct download link for Natura 2000}
+\item{force}{(optional). [`logical`] should a new download be forced even if data already exists in the directory? Defaults to `FALSE`.}
+
+\item{nlink}{(normally not altered). The [`character`] direct download link for Natura 2000.}
 }
 \description{
 Set or download the N2000 database in geopackage format to a given folder
@@ -27,4 +30,6 @@ n2000_getGPKG(folder = 'myfolder', year = "2019")
 }
 \author{
 Martin Jung
+
+Matt Lewis
 }

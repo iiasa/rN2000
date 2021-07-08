@@ -2,24 +2,24 @@
 % Please edit documentation in R/n2000_filterSpecies.R
 \name{n2000_habitat}
 \alias{n2000_habitat}
-\title{Create a habitat subset from the Natura2000 dataset}
+\title{Create a habitat subset from the Natura 2000 data}
 \usage{
-n2000_habitat(n2000_file, hname)
+n2000_habitat(x, name)
 }
 \arguments{
-\item{n2000_file}{The file to the Natura2000 geopackage}
+\item{x}{The [`character] file path to the Natura 2000 geopackage}
 
-\item{hname}{The name of the habitat}
+\item{name}{The [`character`] name of the habitat}
 }
 \value{
-A sf object with the Natura 2000 sites containing this habitat
+A [`sf`] object with the Natura 2000 sites containing this habitat
 }
 \description{
-Create a habitat subset from the Natura2000 dataset
+Create a habitat subset from the Natura 2000 data
 }
 \examples{
 \dontrun{
-n2000_habitat('/media/martin/data/EuropeanBiodiversityData/N2000/Natura2000_end2019.gpkg', hname = 'Mountain hay meadows')
+n2000_habitat('/filepath/Natura2000_end2019.gpkg', name = 'Mountain hay meadows')
 }
 }
 \author{

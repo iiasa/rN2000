@@ -1,85 +1,92 @@
-#' Create a species subset from the Natura2000 dataset
+#' Create a species subset from the Natura 2000 data
 #'
-#' @param n2000_file The file to the Natura2000 geopackage
-#' @param sname The latin name of a focal species
-#' @return A sf object with the Natura 2000 sites containing this species
+#' @param x The [`character] file path to the Natura 2000 geopackage
+#' @param name The [`character`] latin name of a focal species
+#' @return A [`sf`] object with the Natura 2000 sites containing this species
 #' @examples
 #'\dontrun{
-#' n2000_species('/media/martin/data/EuropeanBiodiversityData/N2000/Natura2000_end2019.gpkg', sname = 'Asio otus')
+#' n2000_species('/filepath/Natura2000_end2019.gpkg', name = 'Asio otus')
 #' }
 #' @export
 #' @author Martin Jung
 
-n2000_species <- function(n2000_file, sname){
+n2000_species <- function(x, name){
   # List and print the layers
-  #st_layers(n2000_file)
-  assertthat::assert_that(file.exists(n2000_file),
-                          !is.null(sname),
-                          has_extension(n2000_file,'gpkg'))
+  assertthat::assert_that(
+    is.character(x),
+    file.exists(x),
+    assertthat::has_extension(x,'gpkg'),
+    is.character(name))
 
   # Read species tables
   species_table <- bind_rows(
-    suppressWarnings( sf::st_read(n2000_file, "SPECIES") ) %>% dplyr::mutate(origin = 'SPECIES'),
-    suppressWarnings( sf::st_read(n2000_file, "OTHERSPECIES") ) %>% dplyr::mutate(origin = 'OTHER_SPECIES')
+    suppressWarnings( sf::st_read(x, layer = "SPECIES") ) %>% dplyr::mutate(origin = 'SPECIES'),
+    suppressWarnings( sf::st_read(x, layer = "OTHERSPECIES") ) %>% dplyr::mutate(origin = 'OTHER_SPECIES')
   )
+
   # Remove certain species without valid name
   species_table <- species_table %>% dplyr::filter(SPECIESNAME %notin% c('--NULL--')) %>%
     dplyr::filter(NONPRESENCEINSITE != '1')
+
   # Check that species exist in species table
-  species_lists <- str_squish ( as.character( unique(species_table$SPECIESNAME) ) )
+  species_lists <- n2000_unique_sp(x)
+
   # Check that name is in species list
-  assertthat::assert_that(sname %in% species_lists,
+  assertthat::assert_that(name %in% species_lists,
                           anyNA(species_table$SPECIESNAME)==FALSE)
 
   # Table for species
-  tab_sn <- species_table %>% dplyr::filter(SPECIESNAME == sname) %>%
+  tab_sn <- species_table %>% dplyr::filter(SPECIESNAME == name) %>%
     dplyr::select(COUNTRY_CODE:SPECIESCODE,SPGROUP,POPULATION_TYPE,LOWERBOUND:INTRODUCTION_CANDIDATE) %>%
     dplyr::distinct()
   assertthat::assert_that(nrow(tab_sn)>0)
 
-  myLog('[Filtering] ','Prepared ', nrow(tab_sn), ' of ', sname)
+  myLog('[Filtering] ','Prepared ', nrow(tab_sn), ' of ', name)
   return(tab_sn)
 }
 
-#' Create a habitat subset from the Natura2000 dataset
+#' Create a habitat subset from the Natura 2000 data
 #'
-#' @param n2000_file The file to the Natura2000 geopackage
-#' @param hname The name of the habitat
-#' @return A sf object with the Natura 2000 sites containing this habitat
+#' @param x The [`character] file path to the Natura 2000 geopackage
+#' @param name The [`character`] name of the habitat
+#' @return A [`sf`] object with the Natura 2000 sites containing this habitat
 #' @examples
 #'\dontrun{
-#' n2000_habitat('/media/martin/data/EuropeanBiodiversityData/N2000/Natura2000_end2019.gpkg', hname = 'Mountain hay meadows')
+#' n2000_habitat('/filepath/Natura2000_end2019.gpkg', name = 'Mountain hay meadows')
 #' }
 #' @export
 #' @author Martin Jung
 
-n2000_habitat <- function(n2000_file, hname){
+n2000_habitat <- function(x, name){
   # List and print the layers
   #st_layers(n2000_file)
-  assertthat::assert_that(file.exists(n2000_file),
-                          !is.null(hname),
-                          has_extension(n2000_file,'gpkg'))
+  assertthat::assert_that(
+    is.character(x),
+    file.exists(x),
+    assertthat::has_extension(x,'gpkg'),
+    is.character(name))
 
   # Read species tables
-  habitat_table <- sf::st_read(n2000_file, "HABITATS")
+  habitat_table <- sf::st_read(x, layer = "HABITATS") %>%
+    suppressWarnings()
 
-  # Remove certain species without valid name
+  # Remove certain habitats without valid name
   habitat_table <- habitat_table  %>% dplyr::filter(DESCRIPTION %notin% c('--NULL--'))
   # Remove sites where the habitat is no longer present
   habitat_table <- habitat_table %>% dplyr::filter(NON_PRESENCE_IN_SITE != '1')
 
-  # Check that species exist in species table
-  habitat_list <- str_squish ( as.character( unique(habitat_table$DESCRIPTION) ) )
+  # Check that habitats exist in species table
+  habitat_list <- stringr::str_squish ( as.character( unique(habitat_table$DESCRIPTION) ) )
 
   # Check that name is in species list
-  assertthat::assert_that(hname %in% habitat_list,
+  assertthat::assert_that(name %in% habitat_list,
                           anyNA(habitat_table$HABITATCODE)==FALSE)
 
   # Table for species
-  tab_hn <- habitat_table %>% dplyr::filter(DESCRIPTION == hname)
+  tab_hn <- habitat_table %>% dplyr::filter(DESCRIPTION == name)
   assertthat::assert_that(nrow(tab_sn)>0)
 
-  myLog('[Filtering] ','Prepared ', nrow(tab_hn), ' of ', hname, ' sites')
+  myLog('[Filtering] ','Prepared ', nrow(tab_hn), ' of ', name, ' sites')
   return(tab_hn)
 }
 
