@@ -25,6 +25,7 @@ n2000_format_definitions <-
 #' @param x A [`character`] directory to the Natura 2000 csv files (i.e. containing 'Natura2000_end2019_SPECIES.csv'). Or a [`character`] file path to the Natura 2000 geopackage file ('Natura2000_end2019.gpkg').
 #' @details Works with either geopackage (.gpkg) or csv (.csv) file extensions of downloaded data.
 #' @details If you haven't downloaded the data yet, see `rN2000::n2000_getCSV()` or `rN2000::n2000_getGPKG()`
+#' @return A \code{vector} of species binomial names.
 #' @author Matt Lewis
 #' @export
 n2000_unique_sp <-
@@ -32,11 +33,11 @@ n2000_unique_sp <-
     assertthat::assert_that(
       is.character(x),
       (file.exists(x) | dir.exists(x) | dir.exists(substr(x, 1, (nchar(x)-1)))),
-      (substr(x, (nchar(x)-4), nchar(x)) == ".csv" | substr(x, (nchar(x)-5), nchar(x)) == ".gpkg"),
+      (substr(x, (nchar(x)-3), nchar(x)) == ".csv" | substr(x, (nchar(x)-4), nchar(x)) == ".gpkg"),
       msg = "This file path doesn't seem to point to the correct file(s).
       If you haven't downloaded the data yet, you can do so with `rN2000::n2000_getCSV()` or `rN2000::n2000_getGPKG()`")
 
-    if(is.dir(x) | is.dir(substr(x, 1, (nchar(x)-1)))){
+    if(dir.exists(x) | dir.exists(substr(x, 1, (nchar(x)-1)))){
       x_files <-
         paste0(
           x,
@@ -49,7 +50,7 @@ n2000_unique_sp <-
         do.call(what = "rbind")
     }else{
       ret <-
-        rbind(
+        dplyr::bind_rows(
           x %>%
             sf::st_read(layer = "SPECIES", quiet = T) %>%
             suppressWarnings(),
@@ -64,7 +65,9 @@ n2000_unique_sp <-
       ret %>%
       dplyr::mutate(SPECIESNAME = stringr::str_squish(SPECIESNAME)) %>%
       dplyr::filter(!duplicated(SPECIESNAME)) %>%
-      dplyr::select(SPECIESNAME)
+      dplyr::select(SPECIESNAME) %>%
+      unlist() %>%
+      as.character()
 
     return(ret)
   }

@@ -9,6 +9,9 @@ n2000_unique_sp(x)
 \arguments{
 \item{x}{A [`character`] directory to the Natura 2000 csv files (i.e. containing 'Natura2000_end2019_SPECIES.csv'). Or a [`character`] file path to the Natura 2000 geopackage file ('Natura2000_end2019.gpkg').}
 }
+\value{
+A \code{vector} of species binomial names.
+}
 \description{
 Get list of unique species names from Natura 2000 checklists
 }

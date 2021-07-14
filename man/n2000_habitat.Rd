@@ -7,12 +7,12 @@
 n2000_habitat(x, name)
 }
 \arguments{
-\item{x}{The [`character] file path to the Natura 2000 geopackage}
+\item{x}{The \code{character} file path to the Natura 2000 geopackage}
 
-\item{name}{The [`character`] name of the habitat}
+\item{name}{The \code{character} name of the habitat}
 }
 \value{
-A [`sf`] object with the Natura 2000 sites containing this habitat
+A \code{sf} object with the Natura 2000 sites containing this habitat
 }
 \description{
 Create a habitat subset from the Natura 2000 data
@@ -24,4 +24,6 @@ n2000_habitat('/filepath/Natura2000_end2019.gpkg', name = 'Mountain hay meadows'
 }
 \author{
 Martin Jung
+
+Matt Lewis
 }

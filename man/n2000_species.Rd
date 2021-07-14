@@ -7,12 +7,12 @@
 n2000_species(x, name)
 }
 \arguments{
-\item{x}{The [`character] file path to the Natura 2000 geopackage}
+\item{x}{The \code{character} file path to the Natura 2000 geopackage}
 
-\item{name}{The [`character`] latin name of a focal species}
+\item{name}{The \code{character} latin name of a focal species}
 }
 \value{
-A [`sf`] object with the Natura 2000 sites containing this species
+A \code{sf} object with the Natura 2000 sites containing this species
 }
 \description{
 Create a species subset from the Natura 2000 data
@@ -24,4 +24,6 @@ n2000_species('/filepath/Natura2000_end2019.gpkg', name = 'Asio otus')
 }
 \author{
 Martin Jung
+
+Matt Lewis
 }
