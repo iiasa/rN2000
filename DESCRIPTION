@@ -36,7 +36,8 @@ Depends:
 Suggests:
     tidyr,
     fasterize,
-    leaflet.extras2
+    leaflet.extras2,
+    ggplot2
 URL: https://github.com/iiasa/rN2000
 BugReports: https://github.com/iiasa/rN2000
 RoxygenNote: 7.1.1

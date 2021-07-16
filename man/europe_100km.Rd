@@ -5,7 +5,7 @@
 \alias{europe_100km}
 \title{100-km grid of Europe}
 \format{
-A [`sf`] polygon.
+A \code{sf} polygon.
 \describe{
   \item{CellCode}{code for individual cells}
   \item{EofOrigin}{distance East of the data origin(centroid) in m}

@@ -52,7 +52,7 @@ n2000_species <- function(x, name){
     dplyr::distinct()
   assertthat::assert_that(nrow(tab_sn)>0)
 
-  myLog('[Filtering] ','Prepared ', nrow(tab_sn), ' of ', name)
+  myLog('[Filtering] ','Prepared ', nrow(tab_sn), ' records of ', name)
 
   ret <-
     x %>%
@@ -108,7 +108,7 @@ n2000_habitat <- function(x, name){
   tab_hn <- habitat_table %>% dplyr::filter(DESCRIPTION == name)
   assertthat::assert_that(nrow(tab_hn)>0)
 
-  myLog('[Filtering] ','Prepared ', nrow(tab_hn), ' of ', name, ' sites')
+  myLog('[Filtering] ','Prepared ', nrow(tab_hn), ' records of ', name, ' sites')
 
   ret <-
     x %>%
@@ -118,30 +118,3 @@ n2000_habitat <- function(x, name){
       quiet = T)
   return(ret)
 }
-
-#' #' Function to check a species name against a list of supplied names
-#' #' Crosscheck against taxize reference system.
-#' #' The output will be saved internally as new object and thus this function does not need to be rerun
-#' #'
-#' #' @param species_lists
-#' #' @keywords internal
-#'
-#'
-#' matchTaxonomy <- function(species_lists){
-#'   # Check that supplied vector is a species list
-#'   assertthat::assert_that(is.vector(species_lists))
-#'
-#'   # Load the taxize package for matchup
-#'   require(taxize)
-#'
-#'   df <- data.frame(
-#'     raw_names = species_lists
-#'   )
-#'
-#'   # Query all species using the taxize package
-#'   o <- lapply(species_lists, function(x) { taxize::tax_name(x, get = 'species') } )
-#'
-#'   dir.create('data',showWarnings = FALSE)
-#'   save('df',file = 'data/NATURA2000_Species.rdata')
-#'
-#' }
