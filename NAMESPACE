@@ -3,6 +3,7 @@
 export("%>%")
 export(n2000_SpatialSpecies)
 export(n2000_format_definitions)
+export(n2000_format_species)
 export(n2000_getCSV)
 export(n2000_getDefinitions)
 export(n2000_getGPGK)

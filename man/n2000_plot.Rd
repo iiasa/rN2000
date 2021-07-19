@@ -4,7 +4,7 @@
 \alias{n2000_plot}
 \title{Plots retrieved Natura 2000 with optional grid, and country borders}
 \usage{
-n2000_plot(x, borders = F, grid = F)
+n2000_plot(x, borders = T, grid = F, sea = T)
 }
 \arguments{
 \item{x}{A \code{sf} object to plot.}
@@ -12,6 +12,8 @@ n2000_plot(x, borders = F, grid = F)
 \item{borders}{A \code{logical} input - should country borders be plotted too? Defaults to \code{FALSE}.}
 
 \item{grid}{A \code{logical} input. Should a grid be added too? Defaults to \code{FALSE}.}
+
+\item{sea}{A \code{logical} input. Should the sea be coloured in? Defaults to \code{TRUE}.}
 }
 \description{
 Wrapper around ggplot for convenience. Requires `ggplot2` to be installed.
