@@ -2,21 +2,23 @@
 % Please edit documentation in R/n2000_plot.R
 \name{n2000_plot}
 \alias{n2000_plot}
-\title{Plots retrieved Natura 2000 with optional grid, and country borders}
+\title{Plot Natura 2000 data}
 \usage{
-n2000_plot(x, borders = T, grid = F, sea = T)
+n2000_plot(x, option, borders = "midres", grid = F, sea = T)
 }
 \arguments{
 \item{x}{A \code{sf} object to plot.}
 
-\item{borders}{A \code{logical} input - should country borders be plotted too? Defaults to \code{FALSE}.}
+\item{option}{The \code{character} type of data to plot. Options are \code{"PO"} ('presence only' - sites where the species is present), \code{"PA"} ('presence absence' - sites where the species is present and absent), \code{"abundancelow"} (the lower bound of abundance), \code{"abundancehigh"} (the higher bound of abundance), or \code{"abundancemid"} (the arithmetic mean of the upper and lower population bounds).}
 
-\item{grid}{A \code{logical} input. Should a grid be added too? Defaults to \code{FALSE}.}
+\item{borders}{(optional) A \code{character} input - should country borders be plotted? Options are \code{"no"}, \code{"lowres"}, \code{"midres"}, \code{"highres"}. Defaults to \code{"midres"}, which, along with \code{lowres} is included in the package data. \code{"highres"} is first retrieved via the \code{rnaturalearth} package.}
 
-\item{sea}{A \code{logical} input. Should the sea be coloured in? Defaults to \code{TRUE}.}
+\item{grid}{(optional) A \code{logical} input. Should a grid be added too? Defaults to \code{FALSE}.}
+
+\item{sea}{(optional) A \code{logical} input. Should the sea be coloured in? Defaults to \code{TRUE}.}
 }
 \description{
-Wrapper around ggplot for convenience. Requires `ggplot2` to be installed.
+Wrapper around \code{ggplot} for convenience plotting with optional grid or administrative boundaries. Requires \code{ggplot2} to be installed.
 }
 \author{
 Matt Lewis

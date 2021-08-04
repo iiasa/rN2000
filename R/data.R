@@ -26,11 +26,20 @@
 #' @source \url{https://www.eea.europa.eu/data-and-maps/data/eea-reference-grids-2}
 "europe_100km"
 
-#' Country administrative boundaries
+#' European country administrative boundaries
 #'
-#' Natural Earth Data for countries within the European Bounding Box. Obtained through the \code{rnaturalearth} package at \code{scale = 50}. Reprojected to \code{ETRS89-extended / LAEA Europe} and clipped to a bounding box around Europe.
+#' @description Natural Earth data at \code{scale = 110} for countries within a European Bounding Box. Obtained through the \code{rnaturalearth} package at \code{scale = 110}. Reprojected to \code{ETRS89-extended / LAEA Europe} and clipped to a bounding box around Europe using the internal \code{N2000:::get_EuropeanCountries()} function.
 #'
 #' @format \code{sf} polygons.
 #' @author Natural Earth
 #' @source \url{https://www.naturalearthdata.com/downloads/}
-"europe_countries"
+"europe_countries_lowres"
+
+#' European country administrative boundaries
+#'
+#' @description Natural Earth data at \code{scale = 50} for countries within a European Bounding Box. Obtained through the \code{rnaturalearth} package at \code{scale = 50}. Reprojected to \code{ETRS89-extended / LAEA Europe} and clipped to a bounding box around Europe using the internal \code{N2000:::get_EuropeanCountries()} function.
+#'
+#' @format \code{sf} polygons.
+#' @author Natural Earth
+#' @source \url{https://www.naturalearthdata.com/downloads/}
+"europe_countries_midres"
