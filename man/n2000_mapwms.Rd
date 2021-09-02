@@ -2,26 +2,34 @@
 % Please edit documentation in R/n2000_mapwms.R
 \name{n2000_mapwms}
 \alias{n2000_mapwms}
-\title{Maps outs the Natura 2000 sites using the commissions WMS services}
+\title{Map Natura 2000 sites using WMS services}
 \usage{
-n2000_mapwms(
-  title = "N2000",
-  clng = 16.3588059165812,
-  clat = 48.0618047198572,
-  czoom = 12
-)
+n2000_mapwms(title = "N2000", clng = NA, clat = NA, czoom = NA)
 }
 \arguments{
-\item{title}{The title of the WMS layer to be rendered}
+\item{title}{The [`character`] title of the WMS layer to be rendered. Options are: 'N2000', 'CDDA', and 'N2000_centroids'. Defaults to 'N2000'. See details.}
+
+\item{clng}{The [`numeric`] centre-point longitude coordinate of the field of view. See details.}
+
+\item{clat}{The [`numeric`] centre-point latitude coordinate of the field of view. See details.}
+
+\item{czoom}{The [`numeric`] zoom level to use. See details.}
 }
 \description{
-This function requires the {leaflet} package to be installed and a functioning internet connection
+N.b. This function requires the \code{leaflet}, and \code{leaflet.extras2} packages to be installed and a functioning internet connection.
+}
+\details{
+`title` has three options: 'N2000' to render Natura 2000 sites, 'CDDA' to render sites listed on the Common Database on Designated Areas (i.e. nationally designated areas) or 'N2000_centroids' to render only the centroids of the Natura 2000 sites.
+
+The default field of view for either \code{title = "N2000"} or \code{title = "CDDA"} focuses on the Schlosspark in Laxenburg, Austria. This is arbitrary, and does not by any means reflect any biases on the parts of the authors. The default for \code{title = "N2000_centroids"} gives view of most of Europe.
 }
 \examples{
 \dontrun{
-n2000_mapwms(folder = 'myfolder', year = "2019")
+n2000_mapwms()
 }
 }
 \author{
 Martin Jung
+
+Matt Lewis
 }
