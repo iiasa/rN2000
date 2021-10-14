@@ -7,7 +7,7 @@
 #' @return A \code{sf} object with the Natura 2000 sites containing this species
 #' @examples
 #'\dontrun{
-#' n2000_filterSpecies('/filepath/Natura2000_end2019.gpkg', name = 'Asio otus')
+#' n2000_filterSpecies('/filepath/Natura2000_end2019.gpkg', name = 'Asio otus', option = 'abundance')
 #' }
 #' @export
 #' @author Martin Jung
@@ -21,8 +21,10 @@ n2000_filterSpecies <- function(x, name, option, check.name = F){
     assertthat::has_extension(x,'gpkg'),
     is.character(name),
     is.character(option),
-    option %in% c("PO", "PA", "abundance"),
+    tolower(option) %in% c("PO", "PA", "abundance"),
     is.logical(check.name))
+  # Match argument call
+  option <- match.arg(option, c("PO", "PA", "abundance"), several.ok = FALSE)
 
   # Read species tables
   species_table <- dplyr::bind_rows(
@@ -69,7 +71,7 @@ n2000_filterSpecies <- function(x, name, option, check.name = F){
                        paste(paste0('"',unique(tab_sn$SITECODE),'"'),
                              collapse = ', '), ");"),
         quiet = T)
-  }else if(option == "PA"){
+  } else if(option == "PA"){
     ret <-
       x %>%
       sf::st_read(
@@ -78,7 +80,7 @@ n2000_filterSpecies <- function(x, name, option, check.name = F){
       dplyr::mutate(PA = ifelse(SITECODE %in% tab_sn$SITECODE,
                                 "Present",
                                 "Absent"))
-  }else{
+  } else {
     ret <-
       x %>%
       sf::st_read(
