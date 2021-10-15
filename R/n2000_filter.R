@@ -21,7 +21,7 @@ n2000_filterSpecies <- function(x, name, option, check.name = F){
     assertthat::has_extension(x,'gpkg'),
     is.character(name),
     is.character(option),
-    tolower(option) %in% c("PO", "PA", "abundance"),
+    option %in% c("PO", "PA", "abundance"),
     is.logical(check.name))
   # Match argument call
   option <- match.arg(option, c("PO", "PA", "abundance"), several.ok = FALSE)
@@ -59,7 +59,7 @@ n2000_filterSpecies <- function(x, name, option, check.name = F){
     dplyr::filter(SPECIESNAME == name) %>%
     dplyr::select(COUNTRY_CODE:SPECIESCODE,SPGROUP,POPULATION_TYPE,LOWERBOUND:INTRODUCTION_CANDIDATE) %>%
     dplyr::distinct()
-  assertthat::assert_that(nrow(tab_sn)>0)
+  if(nrow(tab_sn)==0) return(NULL) # Changed to return as so to not break the code
 
   myLog('[Filtering] ','Prepared ', nrow(tab_sn), ' records of ', name)
 
